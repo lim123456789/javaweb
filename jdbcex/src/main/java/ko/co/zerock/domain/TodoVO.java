@@ -1,14 +1,15 @@
 package ko.co.zerock.domain;
 
-import java.time.LocalDate;
+import lombok.*;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.ToString;
+import java.time.LocalDate;
 
 @Getter
 @Builder
 @ToString
+@AllArgsConstructor
+@NoArgsConstructor
+
 public class TodoVO {
 
 	private Long tno;
