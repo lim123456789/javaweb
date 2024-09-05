@@ -1,5 +1,8 @@
 package ko.co.zerock.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.modelmapper.ModelMapper;
 
 import ko.co.zerock.dao.TodoDAO;
@@ -27,9 +30,36 @@ public enum TodoService {
 		
 		//System.out.println("todoVO: "+ todoVO);
 		
-		log.info(todoVO);
-		
+		log.info(todoVO);		
 		dao.insert(todoVO);
 	}
 	
+	public List<TodoDTO> listAll() throws Exception {
+		
+		List<TodoVO> voList = dao.selectAll();
+		
+		log.info("voList..............");
+		log.info(voList);
+		
+		/*
+		 * List<TodoDTO> dtoList = voList.stream() .map(vo -> modelMapper.map(vo,
+		 * TodoDTO.class)) .collect(Collectors.toList());
+		 */
+		
+		List<TodoDTO> dtoList = new ArrayList<>();
+		
+		for(TodoVO todoVO : voList) {
+			TodoDTO todoDTO = modelMapper.map(todoVO, TodoDTO.class);
+			dtoList.add(todoDTO);
+		}
+		
+		return dtoList;
+	}
+	
+	public TodoDTO get(Long tno) throws Exception {
+		log.info("tno: "+ tno);
+		TodoVO todoVO = dao.selectOne(tno);
+		TodoDTO todoDTO = modelMapper.map(todoVO, TodoDTO.class);
+		return todoDTO;
+	}
 }
