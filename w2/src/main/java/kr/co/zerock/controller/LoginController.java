@@ -9,10 +9,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import kr.co.zerock.dto.MemberDTO;
+import kr.co.zerock.service.MemberService;
 import lombok.extern.java.Log;
+import lombok.extern.log4j.Log4j2;
 
 @WebServlet("/login")
 @Log
+@Log4j2
 public class LoginController extends HttpServlet{
 	
 	@Override
@@ -30,15 +34,16 @@ public class LoginController extends HttpServlet{
 		String mid = req.getParameter("mid");
 		String mpw = req.getParameter("mpw");
 		
-		String str = mid + mpw;
 		
-		HttpSession session = req.getSession();
+		try {
+			MemberDTO memberDTO = MemberService.INSTANCE.login(mid, mpw);
+			HttpSession session = req.getSession();
+			session.setAttribute("loginInfo", memberDTO);
+			resp.sendRedirect("/todo/list");
+		} catch (Exception e) {
+			resp.sendRedirect("/login?result=error");
+		}
 		
-		session.setAttribute("loginInfo", str);
-		
-		resp.sendRedirect("/todo/list");
 	}
-	
-	
 	
 }
