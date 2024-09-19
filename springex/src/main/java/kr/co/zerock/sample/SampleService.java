@@ -1,13 +1,17 @@
 package kr.co.zerock.sample;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
 @Service
 @ToString
+@RequiredArgsConstructor
 public class SampleService {
-	@Autowired
-	private SampleDAO sampleDAO;
+	
+	@Qualifier("normal")
+	private final SampleDAO sampleDAO;
 }
