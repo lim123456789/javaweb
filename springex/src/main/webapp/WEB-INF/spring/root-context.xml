@@ -10,4 +10,22 @@
 	<context:component-scan base-package="kr.co.zerock.sample"/>
 	<!-- <bean class="kr.co.zerock.sample.SampleDAO"></bean>
 	<bean class="kr.co.zerock.sample.SampleService"></bean> -->
+	
+	<bean id ="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
+		<property name="driverClassName" value="com.mysql.cj.jdbc.Driver"></property>
+		<property name="jdbcUrl" value="jdbc:mysql://localhost:3306/webdb?serverTimezone=Asia/Seoul"></property>
+		<property name="username" value="WEBUSER"></property>
+		<property name="password" value="1234"></property>
+		<property name="dataSourceProperties">
+			<props>
+				<prop key="cachePrepStmts">true</prop>
+				<prop key="prepStmtCacheSize">250</prop>
+				<prop key="prepStmtCacheSqlLimit">2048</prop>
+			</props>
+		</property>
+	</bean>
+	<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource"
+		destroy-method="close">
+		<constructor-arg ref="hikariConfig"></constructor-arg>
+	</bean>
 </beans>
