@@ -28,11 +28,13 @@
 	</bean>
 	<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource"
 		destroy-method="close">
-		<constructor-arg ref="hikariConfig"></constructor-arg>
+		<constructor-arg ref="hikariConfig" />
 	</bean>
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
+		<property name="mapperLocations" value="classpath:/mappers/**/*.xml"></property>
 	</bean>
 	
-	<mybatis-spring:scan base-package="kr.co.zerock.mapper"/>
+	<mybatis-spring:scan base-package="kr.co.zerock.mapper"></mybatis-spring:scan>
+	
 </beans>
