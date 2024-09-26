@@ -21,7 +21,15 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 	
-	<context:component-scan base-package="kr.co.zerock" />
+	<!-- <bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+		<property name="formatters">
+			<set>
+				<bean class="kr.co.zerock.controller.formatter.LocalDateFormatter"/>
+			</set>
+		</property>
+	</bean> -->
+	
+	<context:component-scan base-package="kr.co.zerock.controller" />
 	
 	
 	
