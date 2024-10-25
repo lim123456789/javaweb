@@ -13,6 +13,9 @@
 		<logger name="kr.co.zerock" level="INFO" additivity="false">
 			<appender-ref ref="console"/>
 		</logger>
+		<logger name="kr.co.zerock.mapper" level="TRACE" additivity="false">
+			<appender-ref ref="console"></appender-ref>
+		</logger>
 		<root level="INFO" additivity="false">
 			<AppenderRef ref="console"/>
 		</root>

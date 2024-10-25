@@ -1,26 +1,23 @@
-package kr.co.zerock.dto;
+package kr.co.zerock.domain;
 
 import java.time.LocalDate;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+@Getter
 @ToString
-@Data
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class TodoDTO {
+@Builder
+
+public class TodoVO {
+	private long tno;
 	private String title;
-	
-	private Long tno;
-	
 	private LocalDate dueDate;
-	
-	private boolean finished;
-	
 	private String writer;
+	private boolean finished;
 }
