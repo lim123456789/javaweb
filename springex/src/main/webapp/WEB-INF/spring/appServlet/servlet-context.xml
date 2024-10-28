@@ -25,6 +25,7 @@
 		<beans:property name="formatters">
 			<beans:set>
 				<beans:bean class="kr.co.zerock.controller.formatter.LocalDateFormatter"/>
+				<beans:bean class="kr.co.zerock.controller.formatter.CheckboxFormatter"/>
 			</beans:set>
 		</beans:property>
 	</beans:bean>

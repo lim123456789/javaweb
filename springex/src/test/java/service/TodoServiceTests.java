@@ -29,4 +29,9 @@ public class TodoServiceTests {
 				.build();
 		todoService.register(todoDTO);
 	}
+	
+	@Test
+	public void testdelete() {
+		todoService.remove(1L);
+	}
 }

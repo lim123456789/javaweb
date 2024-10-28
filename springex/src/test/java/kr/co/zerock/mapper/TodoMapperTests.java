@@ -1,6 +1,7 @@
 package kr.co.zerock.mapper;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -32,5 +33,18 @@ public class TodoMapperTests {
 				.build();
 		
 		todoMapper.insert(todoVO);
+	}
+	
+	@Test
+	public void testSelectAll() {
+		List<TodoVO> voList = todoMapper.selectAll();
+		voList.forEach(vo -> log.info(vo));
+	}
+	
+	@Test
+	public void testSelectOne() {
+		TodoVO todoVO = todoMapper.selectOne(3L);
+		
+		log.info(todoVO);
 	}
 }

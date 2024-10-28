@@ -1,17 +1,15 @@
-<%-- <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%> --%>
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-	<meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
-    <title>Hello, world!</title>
+<title>Insert title here</title>
 </head>
 <body>
 	<!-- <h1>Hello, world!</h1>
@@ -64,39 +62,29 @@
     						Featured
   						</div>
   						<div class="card-body">
-  							<form action="/todo/register" method="post">
-  								<div class="input-group mb-3">
-  									<span class="input-group-text">Title</span>
-  									<input type="text" name="title" class="form-control" placeholder="Title">
-  								</div>
-  								
-  								<div class="input-group mb-3">
-  									<span class="input-group-text">DueDate</span>
-  									<input type="date" name="dueDate" class="form-control" placeholder="DueDate">
-  								</div>
-  								
-  								<div class="input-group mb-3">
-  									<span class="input-group-text">Writer</span>
-  									<input type="text" name="writer" class="form-control" placeholder="Writer">
-  								</div>
-  								
-  								<div class="my-4">
-  									<div class="float-end">
-  										<button type="submit" class="btn btn-primary">Submit</button>
-  										<button type="result" class="btn btn-secondary">Reset</button>
-  									</div>
-  								</div>
-  							</form>
-  							<script>
-  								const serverValidResult = {}
-  								<c:forEach items="${errors}" var="error">
-  									serverValidResult['${error.getField()}']='${error.defaultMessage}'
-  								</c:forEach>
-  								console.log(serverValidResult)
-  							</script>
-    						<!-- <h5 class="card-title">Special title treatment</h5>
-    						<p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-    						<a href="#" class="btn btn-primary">Go somewhere</a> -->
+    						<h5 class="card-title">Special title treatment</h5>
+    						<table class="table">
+    							<thead>
+    								<tr>
+    									<th scope="col">Tno</th>
+    									<th scope="col">Title</th>
+    									<th scope="col">Writer</th>
+    									<th scope="col">DueDate</th>
+    									<th scope="col">Finished</th>
+    								</tr>
+    							</thead>
+    							<tbody>
+    								<c:forEach items="${dtoList}" var="dto">
+    								<tr>
+    									<th scope="row"><c:out value="${dto.tno}"></c:out></th>
+    									<td><a href="/todo/read?tno=${dto.tno}" class="text-decoration-none"><c:out value="${dto.title}"></c:out></a></td>
+    									<td><c:out value="${dto.writer}"></c:out></td>
+    									<td><c:out value="${dto.dueDate}"></c:out></td>
+    									<td><c:out value="${dto.finished}"></c:out></td>
+    								</tr>
+    								</c:forEach>	
+    							</tbody>
+    						</table>
   						</div>						
 					</div>
 				</div>
