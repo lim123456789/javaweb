@@ -3,6 +3,7 @@ package kr.co.zerock.mapper;
 import java.util.List;
 
 import kr.co.zerock.domain.TodoVO;
+import kr.co.zerock.dto.PageRequestDTO;
 
 public interface TodoMapper {
 	String getTime();
@@ -16,4 +17,8 @@ public interface TodoMapper {
 	void delete(Long tno);
 	
 	void update(TodoVO todoVO);
+	
+	List<TodoVO> selectList(PageRequestDTO pageRequestDTO);
+	
+	int getCount(PageRequestDTO pageRequestDTO);
 }
