@@ -7,6 +7,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import kr.co.zerock.domain.TodoVO;
+import kr.co.zerock.dto.PageRequestDTO;
+import kr.co.zerock.dto.PageResponseDTO;
 import kr.co.zerock.dto.TodoDTO;
 import kr.co.zerock.mapper.TodoMapper;
 import lombok.RequiredArgsConstructor;
@@ -32,13 +34,11 @@ public class TodoServiceImpl implements TodoService {
 		todoMapper.insert(todoVO);
 	}
 	
-	@Override
-	public List<TodoDTO> getAll(){
-		List<TodoDTO> dtoList = todoMapper.selectAll().stream()
-				.map(vo -> modelMapper.map(vo, TodoDTO.class))
-				.collect(Collectors.toList());
-		return dtoList;
-	}
+	/*
+	 * @Override public List<TodoDTO> getAll(){ List<TodoDTO> dtoList =
+	 * todoMapper.selectAll().stream() .map(vo -> modelMapper.map(vo,
+	 * TodoDTO.class)) .collect(Collectors.toList()); return dtoList; }
+	 */
 	
 	@Override
 	public TodoDTO getOne(Long tno) {
@@ -57,5 +57,23 @@ public class TodoServiceImpl implements TodoService {
 		TodoVO todoVO = modelMapper.map(todoDTO, TodoVO.class);
 		
 		todoMapper.update(todoVO);
+	}
+	
+	@Override
+	public PageResponseDTO<TodoDTO> getList(PageRequestDTO pageRequestDTO){
+		List<TodoVO> voList = todoMapper.selectList(pageRequestDTO);
+		List<TodoDTO> dtoList = voList.stream()
+				.map(vo -> modelMapper.map(vo, TodoDTO.class))
+				.collect(Collectors.toList());
+		
+		int total = todoMapper.getCount(pageRequestDTO);
+		
+		PageResponseDTO<TodoDTO> pageResponseDTO = PageResponseDTO.<TodoDTO>withAll()
+				.dtoList(dtoList)
+				.total(total)
+				.pageRequestDTO(pageRequestDTO)
+				.build();
+		
+		return pageResponseDTO;
 	}
 }

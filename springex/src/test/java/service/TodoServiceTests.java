@@ -1,5 +1,7 @@
 package service;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
+
 import java.time.LocalDate;
 
 import org.junit.jupiter.api.Test;
@@ -8,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import kr.co.zerock.dto.PageRequestDTO;
+import kr.co.zerock.dto.PageResponseDTO;
 import kr.co.zerock.dto.TodoDTO;
 import kr.co.zerock.service.TodoService;
 import lombok.extern.log4j.Log4j2;
@@ -33,5 +37,17 @@ public class TodoServiceTests {
 	@Test
 	public void testdelete() {
 		todoService.remove(1L);
+	}
+	
+	@Test
+	public void testPaging() {
+		
+		PageRequestDTO pageRequestDTO = PageRequestDTO.builder().page(1).size(10).build();
+		
+		PageResponseDTO<TodoDTO> responseDTO = todoService.getList(pageRequestDTO);
+		
+		log.info(responseDTO);
+		
+		responseDTO.getDtoList().stream().forEach(todoDTO -> log.info(todoDTO));
 	}
 }
