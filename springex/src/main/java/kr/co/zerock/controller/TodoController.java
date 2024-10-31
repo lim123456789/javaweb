@@ -25,14 +25,7 @@ import lombok.extern.log4j.Log4j2;
 @RequiredArgsConstructor
 public class TodoController {
 	
-	private final TodoService todoService;
-	
-	@RequestMapping("/list")
-	public void list(Model model) {
-		log.info("todo list..................");
-		
-//		model.addAttribute("dtoList", todoService.getAll());
-	}
+	private final TodoService todoService;	
 	
 	//@RequestMapping(value = "/register", method = RequestMethod.GET)
 	@GetMapping("/register")
@@ -68,10 +61,7 @@ public class TodoController {
 		
 		todoService.remove(tno);
 		
-		redirectAttributes.addAttribute("page", 1);
-		redirectAttributes.addAttribute("size", pageRequestDTO.getSize());
-		
-		return "redirect:/todo/list";
+		return "redirect:/todo/list?"+pageRequestDTO.getLink();
 	}
 	
 	@PostMapping("/modify")
@@ -85,9 +75,8 @@ public class TodoController {
 		log.info(todoDTO);
 		todoService.modify(todoDTO);
 		
-		redirectAttributes.addAttribute("page", pageRequestDTO.getPage());
-		redirectAttributes.addAttribute("size", pageRequestDTO.getSize());
-		return "redirect:/todo/list";
+		redirectAttributes.addAttribute("tno", todoDTO.getTno());
+		return "redirect:/todo/read";
 	}
 	
 	

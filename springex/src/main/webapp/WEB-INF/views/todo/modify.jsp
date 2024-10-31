@@ -23,17 +23,16 @@
 					<div class="card-header">Modify</div>
 					<div class="card-body">
 						<form action="/todo/modify" method="post">
-						<input type="hidden" name="page" value="${pageRequestDTO.page}">
-						<input type="hidden" name="size" value="${pageRequestDTO.size}">
+						
 							<div class="input-group mb-3">
 								<span class="input-group-text">TNO</span> <input type="text"
 									class="form-control" name="tno"
-									value='<c:out value="${dto.tno}"></c:out>' readonly>
+									value=<c:out value="${dto.tno}"></c:out> readonly>
 							</div>
 							<div class="input-group mb-3">
 								<span class="input-group-text">Title</span> <input type="text"
 									name="title" class="form-control"
-									value='<c:out value="${dto.title}"></c:out>' readonly>
+									value='<c:out value="${dto.title}"></c:out>'>
 							</div>
 							<div class="input-group mb-3">
 								<span class="input-group-text">DueDate</span> <input type="date"
@@ -71,7 +70,7 @@
 					e.preventDefault()
 					e.stopPropagation()
 
-					formObj.action = "/todo/remove"
+					formObj.action = `/todo/remove?${pageRequestDTO.link}`
 
 					formObj.method = "post"
 					formObj.submit()
