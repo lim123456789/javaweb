@@ -1,6 +1,7 @@
 package kr.co.zerock.b01.controller;
 
 
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import kr.co.zerock.b01.dto.BoardDTO;
 import kr.co.zerock.b01.dto.PageRequestDTO;
@@ -23,6 +24,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class BoardController {
     private final BoardService boardService;
 
+    @Operation(summary = "list")
     @GetMapping("/list")
     public void list(PageRequestDTO pageRequestDTO, Model model){
         PageResponseDTO<BoardDTO> responseDTO = boardService.list(pageRequestDTO);
@@ -30,6 +32,7 @@ public class BoardController {
         model.addAttribute("responseDTO", responseDTO);
     }
 
+    @Operation(summary = "register")
     @GetMapping("/register")
     public void registerGET(){
 
@@ -52,6 +55,7 @@ public class BoardController {
         return "redirect:/board/list";
     }
 
+    @Operation(summary = "read-modify")
     @GetMapping({"/read", "/modify"})
     public void read(Long bno, PageRequestDTO pageRequestDTO, Model model){
         BoardDTO boardDTO = boardService.readOne(bno);

@@ -1,5 +1,6 @@
 package kr.co.zerock.b01.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +20,7 @@ public class SampleController {
 
     private DayOfWeek InitStream;
 
+    @Operation(summary = "hello")
     @GetMapping("/hello")
     public void hello(Model model) {
         log.info("hello............");
