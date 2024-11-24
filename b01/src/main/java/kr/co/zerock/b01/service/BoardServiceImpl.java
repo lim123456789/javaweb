@@ -3,6 +3,7 @@ package kr.co.zerock.b01.service;
 import jakarta.transaction.Transactional;
 import kr.co.zerock.b01.domain.Board;
 import kr.co.zerock.b01.dto.BoardDTO;
+import kr.co.zerock.b01.dto.BoardListReplyCountDTO;
 import kr.co.zerock.b01.dto.PageRequestDTO;
 import kr.co.zerock.b01.dto.PageResponseDTO;
 import kr.co.zerock.b01.repository.BoardRepository;
@@ -76,6 +77,21 @@ public class BoardServiceImpl implements BoardService{
         return PageResponseDTO.<BoardDTO>withAll()
                 .pageRequestDTO(pageRequestDTO)
                 .dtoList(dtoList)
+                .total((int)result.getTotalElements())
+                .build();
+    }
+
+    @Override
+    public PageResponseDTO<BoardListReplyCountDTO> listWithReplyCount(PageRequestDTO pageRequestDTO){
+        String[] types = pageRequestDTO.getTypes();
+        String keyword = pageRequestDTO.getKeyword();
+        Pageable pageable = pageRequestDTO.getPageable("bno");
+
+        Page<BoardListReplyCountDTO> result = boardRepository.searchWithReplyCount(types, keyword, pageable);
+
+        return PageResponseDTO.<BoardListReplyCountDTO>withAll()
+                .pageRequestDTO(pageRequestDTO)
+                .dtoList(result.getContent())
                 .total((int)result.getTotalElements())
                 .build();
     }

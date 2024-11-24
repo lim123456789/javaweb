@@ -1,6 +1,7 @@
 package kr.co.zerock.b01.service;
 
 import kr.co.zerock.b01.dto.BoardDTO;
+import kr.co.zerock.b01.dto.BoardListReplyCountDTO;
 import kr.co.zerock.b01.dto.PageRequestDTO;
 import kr.co.zerock.b01.dto.PageResponseDTO;
 
@@ -14,4 +15,6 @@ public interface BoardService {
     void remove(Long bno);
 
     PageResponseDTO<BoardDTO> list(PageRequestDTO pageRequestDTO);
+
+    PageResponseDTO<BoardListReplyCountDTO> listWithReplyCount(PageRequestDTO pageRequestDTO);
 }

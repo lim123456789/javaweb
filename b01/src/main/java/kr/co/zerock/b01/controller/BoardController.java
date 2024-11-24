@@ -4,6 +4,7 @@ package kr.co.zerock.b01.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import kr.co.zerock.b01.dto.BoardDTO;
+import kr.co.zerock.b01.dto.BoardListReplyCountDTO;
 import kr.co.zerock.b01.dto.PageRequestDTO;
 import kr.co.zerock.b01.dto.PageResponseDTO;
 import kr.co.zerock.b01.service.BoardService;
@@ -27,7 +28,10 @@ public class BoardController {
     @Operation(summary = "list")
     @GetMapping("/list")
     public void list(PageRequestDTO pageRequestDTO, Model model){
-        PageResponseDTO<BoardDTO> responseDTO = boardService.list(pageRequestDTO);
+        //PageResponseDTO<BoardDTO> responseDTO = boardService.list(pageRequestDTO);
+
+        PageResponseDTO<BoardListReplyCountDTO> responseDTO = boardService.listWithReplyCount(pageRequestDTO);
+
         log.info(responseDTO);
         model.addAttribute("responseDTO", responseDTO);
     }
