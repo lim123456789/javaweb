@@ -5,6 +5,7 @@ import kr.co.zerock.b01.domain.Reply;
 import kr.co.zerock.b01.dto.PageRequestDTO;
 import kr.co.zerock.b01.dto.PageResponseDTO;
 import kr.co.zerock.b01.dto.ReplyDTO;
+import kr.co.zerock.b01.repository.BoardRepository;
 import kr.co.zerock.b01.repository.ReplyRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -29,9 +30,16 @@ public class ReplyServiceImpl implements ReplyService {
 
     private final ModelMapper modelMapper;
 
+    private final BoardRepository boardRepository;
+
     @Override
     public Long register(ReplyDTO replyDTO) {
-        Reply reply = modelMapper.map(replyDTO, Reply.class);
+//      Reply reply = modelMapper.map(replyDTO, Reply.class);
+        Reply reply = Reply.builder().board(boardRepository.findById(replyDTO.getBno()).orElseThrow())
+                .replyText(replyDTO.getReplyText())
+                .replyer(replyDTO.getReplyer())
+                .build();
+        log.info(reply);
         Long rno = replyRepository.save(reply).getRno();
 
         return rno;
