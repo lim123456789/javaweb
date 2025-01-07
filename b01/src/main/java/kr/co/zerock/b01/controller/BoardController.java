@@ -3,13 +3,13 @@ package kr.co.zerock.b01.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
-import kr.co.zerock.b01.dto.BoardDTO;
-import kr.co.zerock.b01.dto.BoardListReplyCountDTO;
-import kr.co.zerock.b01.dto.PageRequestDTO;
-import kr.co.zerock.b01.dto.PageResponseDTO;
+import kr.co.zerock.b01.dto.*;
 import kr.co.zerock.b01.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,11 +19,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.File;
+import java.nio.file.Files;
+import java.util.List;
+
 @Controller
 @RequestMapping("/board")
 @Log4j2
 @RequiredArgsConstructor
 public class BoardController {
+    @Value("${kr.co.zerock.upload.path}")
+    private String uploadPath;
+
     private final BoardService boardService;
 
     @Operation(summary = "list")
@@ -31,7 +38,7 @@ public class BoardController {
     public void list(PageRequestDTO pageRequestDTO, Model model){
         //PageResponseDTO<BoardDTO> responseDTO = boardService.list(pageRequestDTO);
 
-        PageResponseDTO<BoardListReplyCountDTO> responseDTO = boardService.listWithReplyCount(pageRequestDTO);
+        PageResponseDTO<BoardListAllDTO> responseDTO = boardService.listWithAll(pageRequestDTO);
 
         log.info(responseDTO);
         model.addAttribute("responseDTO", responseDTO);
@@ -44,7 +51,9 @@ public class BoardController {
     }
 
     @PostMapping("/register")
-    public String registerPost(@Valid BoardDTO boardDTO, BindingResult bindingResult, RedirectAttributes redirectAttributes){
+    public String registerPost(@Valid BoardDTO boardDTO, BindingResult bindingResult,
+                               RedirectAttributes redirectAttributes){
+
         log.info("board POST register.........");
 
         if(bindingResult.hasErrors()){
@@ -53,10 +62,15 @@ public class BoardController {
 
             return "redirect:/board/register";
         }
+        log.info("-----------!!!!!-------------");
         log.info(boardDTO);
+        log.info("-----------!!!!!-------------");
+
 
         Long bno = boardService.register(boardDTO);
+
         redirectAttributes.addFlashAttribute("result", bno);
+
         return "redirect:/board/list";
     }
 
@@ -86,10 +100,38 @@ public class BoardController {
     }
 
     @PostMapping("/remove")
-    public String remove(Long bno, RedirectAttributes redirectAttributes){
+    public String remove(BoardDTO boardDTO, RedirectAttributes redirectAttributes){
+        long bno = boardDTO.getBno();
         log.info("remove post......"+bno);
+
         boardService.remove(bno);
+
+        log.info(boardDTO.getFileNames());
+        List<String> fileNames = boardDTO.getFileNames();
+        if(fileNames != null && fileNames.size() > 0){
+            removeFiles(fileNames);
+        }
+
         redirectAttributes.addFlashAttribute("result", "removed");
         return "redirect:/board/list";
+    }
+
+    public void removeFiles(List<String> files){
+        for (String fileName:files){
+            Resource resource = new FileSystemResource(uploadPath + File.separator + fileName);
+            String resourceName = resource.getFilename();
+
+            try {
+                String contentType = Files.probeContentType(resource.getFile().toPath());
+                resource.getFile().delete();
+
+                if (contentType.startsWith("image")) {
+                    File thumbnailFile = new File(uploadPath + File.separator + "s_" + fileName);
+                    thumbnailFile.delete();
+                }
+            } catch (Exception e){
+                log.error(e.getMessage());
+            }
+        }
     }
 }
