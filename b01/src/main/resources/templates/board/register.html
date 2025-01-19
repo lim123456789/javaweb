@@ -1,6 +1,8 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+<html lang="en"
       xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/basic.html}">
 <head>
     <meta charset="UTF-8">
@@ -27,7 +29,8 @@
 
                         <div class="input-group mb-3">
                             <span class="input-group-text">Writer</span>
-                            <input type="text" name="writer" class="form-control" placeholder="Writer">
+                            <input type="text" name="writer" class="form-control" placeholder="Writer"
+                                    th:value="${#authentication.principal.username}" readonly>
                         </div>
 
                         <div class="input-group mb-3">
@@ -85,8 +88,13 @@
 </div>
 
 <script layout:fragment="script" th:inline="javascript">
+
+    const auth = [[${#authentication}]]
     const errors = [[${errors}]]
     console.log(errors)
+    console.log("-----------------------------")
+    console.log(auth)
+    console.log("-----------------------------")
 
     let errorMsg = ''
 
@@ -174,6 +182,8 @@
 
         document.querySelector("form").submit();
     }, false)
+
+
 </script>
 <body>
 
