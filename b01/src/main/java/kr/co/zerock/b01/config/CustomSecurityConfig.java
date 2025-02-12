@@ -3,6 +3,7 @@ package kr.co.zerock.b01.config;
 
 import kr.co.zerock.b01.security.CustomUserDetailService;
 import kr.co.zerock.b01.security.handler.Custom403Handler;
+import kr.co.zerock.b01.security.handler.CustomSocialLoginSuccessHandler;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
@@ -16,6 +17,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
@@ -37,16 +39,17 @@ public class CustomSecurityConfig {
     }
 
     @Bean
+    public AuthenticationSuccessHandler authenticationSuccessHandler(){
+        return new CustomSocialLoginSuccessHandler(passwordEncoder());
+    }
+
+    @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         log.info("-----------------configure-----------------");
 
-        http.formLogin(config -> {
-            config.loginPage("/member/login");
-        });
+        http.formLogin(config -> config.loginPage("/member/login"));
 
-        http.csrf(config -> {
-            config.disable();
-        });
+        http.csrf(config -> config.disable());
 
         http.rememberMe(config ->{
             config.key("12345678")
@@ -56,7 +59,10 @@ public class CustomSecurityConfig {
 
                 });
 
-        http.exceptionHandling().accessDeniedHandler(accessDeniedHandler());
+        http.exceptionHandling(config -> config.accessDeniedHandler(accessDeniedHandler()));
+
+        http.oauth2Login(config -> config.loginPage("/member/login").successHandler(authenticationSuccessHandler()));
+
         return http.build();
     }
 

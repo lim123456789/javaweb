@@ -28,7 +28,6 @@ public class Member extends BaseEntity{
 
     @ElementCollection(fetch = FetchType.LAZY)
     @Builder.Default
-
     private Set<MemberRole> roleSet = new HashSet<>();
 
     public void changePassword(String mpw){

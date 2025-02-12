@@ -5,6 +5,8 @@ import kr.co.zerock.b01.dto.MemberJoinDTO;
 import kr.co.zerock.b01.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,6 +25,7 @@ public class MemberController {
     @GetMapping("/login")
     public void loginGET(@RequestParam(value = "error", required = false) String error,
                          @RequestParam(value = "logout", required = false) String logout){
+
         log.info("login get..............");
         log.info("logout: " + logout);
 
